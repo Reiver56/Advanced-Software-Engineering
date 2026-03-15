@@ -1,0 +1,28 @@
+transactions:
+  - id: 1
+    objects:
+      - target: "account.Account"
+        args: {balance: 500}
+      - target: "account.Account"
+        args: {balance: 300}
+    methodsCalls:
+      - this: 0
+        name: withdraw
+        args: {amount: 100}
+      - this: 1
+        name: deposit
+        args: {amount: 100}
+
+  - id: 2
+    objects:
+      - target: "account.Account"
+        args: {balance: 50}
+      - target: "account.Account"
+        args: {balance: 200}
+    methodsCalls:
+      - this: 0
+        name: withdraw
+        args: {amount: 200}
+      - this: 1
+        name: deposit
+        args: {amount: 200}
