@@ -1,0 +1,82 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT">
+  <diagram id="families-to-persons" name="Families2Persons">
+    <mxGraphModel dx="2039" dy="1061" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#172B4D;" value="Families2Persons — QVT Relations graphical overview" vertex="1">
+          <mxGeometry height="50" width="1500" x="100" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sourceHeader" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=17;fontStyle=1;" value="Source metamodel: Families" vertex="1">
+          <mxGeometry height="50" width="450" x="40" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="relationHeader" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=17;fontStyle=1;" value="QVT top relations" vertex="1">
+          <mxGeometry height="50" width="450" x="625" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="targetHeader" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=17;fontStyle=1;" value="Target metamodel: Persons" vertex="1">
+          <mxGeometry height="50" width="450" x="1210" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="fatherSource" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" value="&lt;b&gt;checkonly domain families&lt;/b&gt;&lt;br&gt;&lt;br&gt;family : Family {&lt;br&gt;&amp;nbsp;&amp;nbsp;lastName = lastName,&lt;br&gt;&amp;nbsp;&amp;nbsp;father = member : Member {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;firstName = firstName&lt;br&gt;&amp;nbsp;&amp;nbsp;}&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="40" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="fatherRelation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=16;" value="&lt;b&gt;top relation FatherToMale&lt;/b&gt;&lt;br&gt;&lt;br&gt;firstName, lastName : String" vertex="1">
+          <mxGeometry height="105" width="450" x="625" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="fatherTarget" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;" value="&lt;b&gt;enforce domain persons&lt;/b&gt;&lt;br&gt;&lt;br&gt;person : Male {&lt;br&gt;&amp;nbsp;&amp;nbsp;fullName = firstName + &#39; &#39; + lastName&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="1210" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="fatherIn" edge="1" parent="1" source="fatherSource" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D6B656;strokeWidth=2;" target="fatherRelation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fatherOut" edge="1" parent="1" source="fatherRelation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#82B366;strokeWidth=2;" target="fatherTarget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="motherSource" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" value="&lt;b&gt;checkonly domain families&lt;/b&gt;&lt;br&gt;&lt;br&gt;family : Family {&lt;br&gt;&amp;nbsp;&amp;nbsp;lastName = lastName,&lt;br&gt;&amp;nbsp;&amp;nbsp;mother = member : Member {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;firstName = firstName&lt;br&gt;&amp;nbsp;&amp;nbsp;}&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="40" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="motherRelation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=16;" value="&lt;b&gt;top relation MotherToFemale&lt;/b&gt;&lt;br&gt;&lt;br&gt;firstName, lastName : String" vertex="1">
+          <mxGeometry height="105" width="450" x="625" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="motherTarget" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#F8CECC;strokeColor=#B85450;fontSize=14;" value="&lt;b&gt;enforce domain persons&lt;/b&gt;&lt;br&gt;&lt;br&gt;person : Female {&lt;br&gt;&amp;nbsp;&amp;nbsp;fullName = firstName + &#39; &#39; + lastName&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="1210" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="motherIn" edge="1" parent="1" source="motherSource" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D6B656;strokeWidth=2;" target="motherRelation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="motherOut" edge="1" parent="1" source="motherRelation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#B85450;strokeWidth=2;" target="motherTarget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sonSource" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" value="&lt;b&gt;checkonly domain families&lt;/b&gt;&lt;br&gt;&lt;br&gt;family : Family {&lt;br&gt;&amp;nbsp;&amp;nbsp;lastName = lastName,&lt;br&gt;&amp;nbsp;&amp;nbsp;sons = member : Member {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;firstName = firstName&lt;br&gt;&amp;nbsp;&amp;nbsp;}&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="40" y="565" as="geometry" />
+        </mxCell>
+        <mxCell id="sonRelation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=16;" value="&lt;b&gt;top relation SonToMale&lt;/b&gt;&lt;br&gt;&lt;br&gt;firstName, lastName : String" vertex="1">
+          <mxGeometry height="105" width="450" x="625" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="sonTarget" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;" value="&lt;b&gt;enforce domain persons&lt;/b&gt;&lt;br&gt;&lt;br&gt;person : Male {&lt;br&gt;&amp;nbsp;&amp;nbsp;fullName = firstName + &#39; &#39; + lastName&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="1210" y="565" as="geometry" />
+        </mxCell>
+        <mxCell id="sonIn" edge="1" parent="1" source="sonSource" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D6B656;strokeWidth=2;" target="sonRelation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sonOut" edge="1" parent="1" source="sonRelation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#82B366;strokeWidth=2;" target="sonTarget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="daughterSource" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" value="&lt;b&gt;checkonly domain families&lt;/b&gt;&lt;br&gt;&lt;br&gt;family : Family {&lt;br&gt;&amp;nbsp;&amp;nbsp;lastName = lastName,&lt;br&gt;&amp;nbsp;&amp;nbsp;daughters = member : Member {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;firstName = firstName&lt;br&gt;&amp;nbsp;&amp;nbsp;}&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="40" y="765" as="geometry" />
+        </mxCell>
+        <mxCell id="daughterRelation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=16;" value="&lt;b&gt;top relation DaughterToFemale&lt;/b&gt;&lt;br&gt;&lt;br&gt;firstName, lastName : String" vertex="1">
+          <mxGeometry height="105" width="450" x="625" y="795" as="geometry" />
+        </mxCell>
+        <mxCell id="daughterTarget" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#F8CECC;strokeColor=#B85450;fontSize=14;" value="&lt;b&gt;enforce domain persons&lt;/b&gt;&lt;br&gt;&lt;br&gt;person : Female {&lt;br&gt;&amp;nbsp;&amp;nbsp;fullName = firstName + &#39; &#39; + lastName&lt;br&gt;}" vertex="1">
+          <mxGeometry height="165" width="450" x="1210" y="765" as="geometry" />
+        </mxCell>
+        <mxCell id="daughterIn" edge="1" parent="1" source="daughterSource" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D6B656;strokeWidth=2;" target="daughterRelation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="daughterOut" edge="1" parent="1" source="daughterRelation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#B85450;strokeWidth=2;" target="daughterTarget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

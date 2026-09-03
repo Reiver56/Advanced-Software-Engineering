@@ -1,0 +1,69 @@
+transformation Families2Persons(
+    families : Families,
+    persons : Persons
+) {
+
+    -- A father in the source model becomes a Male in the target model
+    top relation FatherToMale {
+        firstName, lastName : String;
+
+        checkonly domain families family : Family {
+            lastName = lastName,
+            father = member : Member {
+                firstName = firstName
+            }
+        };
+
+        enforce domain persons person : Male {
+            fullName = firstName + ' ' + lastName
+        };
+    }
+
+    -- A mother in the source model becomes a Female in the target model
+    top relation MotherToFemale {
+        firstName, lastName : String;
+
+        checkonly domain families family : Family {
+            lastName = lastName,
+            mother = member : Member {
+                firstName = firstName
+            }
+        };
+
+        enforce domain persons person : Female {
+            fullName = firstName + ' ' + lastName
+        };
+    }
+
+    -- Every son in the source model becomes a Male in the target model
+    top relation SonToMale {
+        firstName, lastName : String;
+
+        checkonly domain families family : Family {
+            lastName = lastName,
+            sons = member : Member {
+                firstName = firstName
+            }
+        };
+
+        enforce domain persons person : Male {
+            fullName = firstName + ' ' + lastName
+        };
+    }
+
+    -- Every daughter in the source model becomes a Female in the target model
+    top relation DaughterToFemale {
+        firstName, lastName : String;
+
+        checkonly domain families family : Family {
+            lastName = lastName,
+            daughters = member : Member {
+                firstName = firstName
+            }
+        };
+
+        enforce domain persons person : Female {
+            fullName = firstName + ' ' + lastName
+        };
+    }
+}
