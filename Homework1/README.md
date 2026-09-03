@@ -61,7 +61,7 @@ leaves the accounts unchanged.
 ## Project structure
 
 ```text
-Homework1_Matteo_Carrese/
+Homework1/
 ├── account.py
 ├── operation.py
 ├── operations.py
