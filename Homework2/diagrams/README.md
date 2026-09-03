@@ -34,7 +34,9 @@ before the deposit preparation, or the deposit preparation may complete first.
 When both components are prepared, the machine enters `Committed`. Any failure
 leads to `RolledBack`.
 
-![Flattened transfer state machine](diagrams/transfer_flattened.png)
+<p align="center">
+  <img src="transfer_flattened.png" alt="Coloured Tic-Tac-Toe victory in the Piecewise CLI" width="720"/>
+</p>
 
 The editable source is available in
 [`diagrams/transfer_flattened.drawio`](diagrams/transfer_flattened.drawio).
@@ -49,7 +51,9 @@ The second diagram expresses the same concurrency explicitly:
 - the join is crossed only after both branches have succeeded;
 - a failure in either branch bypasses the join and leads to `RolledBack`.
 
-![Fork and join transfer state machine](diagrams/transfer_fork_join.png)
+<p align="center">
+  <img src="transfer_fork_join.png" alt="Coloured Tic-Tac-Toe victory in the Piecewise CLI" width="720"/>
+</p>
 
 The editable source is available in
 [`diagrams/transfer_fork_join.drawio`](diagrams/transfer_fork_join.drawio).
