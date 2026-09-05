@@ -1,0 +1,528 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+\definecolor{heading}{HTML}{7A1F32}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Advanced Software Engineering}
+\rhead{Homework 4}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\newcommand{\Graph}{\mathbf{Graph}}
+\newcommand{\TG}{\mathit{TG}}
+\newcommand{\type}{\mathit{type}}
+\newcommand{\id}{\mathit{id}}
+
+\title{\textcolor{heading}{\textbf{Homework 4}}}
+\author{Matteo Carrese\\Advanced Software Engineering}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section{Goal}
+
+This homework proves that graphs typed over a fixed type graph $\TG$, together
+with type-preserving graph morphisms, form a category. The proof first shows
+that graph morphisms are closed under composition. It then verifies
+composition, identities, associativity, and the identity laws for typed graphs.
+
+
+\section{Basic definitions}
+
+\begin{definition}[Directed graph]
+A directed graph is a tuple
+\[
+    G=(V_G,E_G,s_G,t_G),
+\]
+where $V_G$ is the set of vertices, $E_G$ is the set of edges, and
+$s_G,t_G:E_G\to V_G$ give the source and target of every edge.
+\end{definition}
+
+\begin{definition}[Graph morphism]
+Let $G$ and $H$ be directed graphs. A graph morphism $f:G\to H$ is a pair
+of functions
+\[
+    f_V:V_G\to V_H,
+    \qquad
+    f_E:E_G\to E_H
+\]
+that preserve the source and target of every edge:
+\begin{equation}
+    f_V\circ s_G=s_H\circ f_E,
+    \qquad
+    f_V\circ t_G=t_H\circ f_E.
+    \label{eq:graph-morphism}
+\end{equation}
+\end{definition}
+
+The two equations say that mapping an edge and then reading its endpoint gives
+the same result as reading the original endpoint and then mapping that vertex.
+Therefore, a graph morphism preserves the incidence structure of the graph.
+
+\section{Composition of graph morphisms}
+
+The following lemma proves the explicit homework statement appearing earlier
+in the lecture material.
+
+\begin{lemma}
+The composition of two graph morphisms is a graph morphism.
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+    f=(f_V,f_E):G\to H
+    \qquad\text{and}\qquad
+    g=(g_V,g_E):H\to K
+\]
+be graph morphisms. Define their composition componentwise:
+\[
+    g\circ f=(g_V\circ f_V,\;g_E\circ f_E):G\to K.
+\]
+
+We first verify preservation of sources. Using associativity of function
+composition and the morphism equations for $f$ and $g$, we obtain
+\begin{align*}
+ (g_V\circ f_V)\circ s_G
+ &=g_V\circ(f_V\circ s_G)\\
+ &=g_V\circ(s_H\circ f_E)\\
+ &=(g_V\circ s_H)\circ f_E\\
+ &=(s_K\circ g_E)\circ f_E\\
+ &=s_K\circ(g_E\circ f_E).
+\end{align*}
+
+The same calculation for targets gives
+\[
+    (g_V\circ f_V)\circ t_G
+    =t_K\circ(g_E\circ f_E).
+\]
+Hence $g\circ f$ satisfies both equations in
+Equation~\ref{eq:graph-morphism}, so it is a graph morphism.
+\end{proof}
+
+\section{Typed graphs}
+
+Fix one graph $\TG$, called the \emph{type graph}.
+
+\begin{definition}[Typed graph]
+A graph typed over $\TG$ is a pair $(G,\type_G)$, where $G$ is a graph and
+\[
+    \type_G:G\to\TG
+\]
+is a graph morphism. It assigns a type in $\TG$ to every vertex and edge of
+$G$ while preserving sources and targets.
+\end{definition}
+
+\begin{definition}[Type-preserving morphism]
+A morphism between two graphs typed over the same $\TG$,
+\[
+    f:(G,\type_G)\to(H,\type_H),
+\]
+is a graph morphism $f:G\to H$ satisfying
+\begin{equation}
+    \type_H\circ f=\type_G.
+    \label{eq:type-preservation}
+\end{equation}
+This equality means that the following triangle commutes:
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+G \arrow[rr,"f"] \arrow[dr,swap,"\type_G"]
+  & & H \arrow[dl,"\type_H"] \\
+  & \TG &
+\end{tikzcd}
+\]
+\end{definition}
+
+In simple terms, $f$ may map vertices and edges to different elements, but it
+cannot change their types.
+
+\section{The category of graphs typed over $\TG$}
+
+We define a structure denoted by $\Graph/\TG$:
+
+\begin{itemize}[leftmargin=2em]
+    \item its \textbf{objects} are all pairs $(G,\type_G)$ with
+          $\type_G:G\to\TG$;
+    \item its \textbf{morphisms} are graph morphisms that satisfy
+          Equation~\ref{eq:type-preservation};
+    \item composition is the componentwise composition of the underlying
+          graph morphisms;
+    \item the identity on $(G,\type_G)$ is the ordinary graph identity
+          $\id_G$.
+\end{itemize}
+
+\begin{theorem}
+The structure $\Graph/\TG$ is a category.
+\end{theorem}
+
+\begin{proof}
+We verify the required properties.
+
+\paragraph{Closure under composition.}
+Consider two composable type-preserving morphisms
+\[
+ f:(G,\type_G)\to(H,\type_H),
+ \qquad
+ g:(H,\type_H)\to(K,\type_K).
+\]
+By the lemma, the underlying composition $g\circ f:G\to K$ is a graph
+morphism. It also preserves typing because
+\begin{align*}
+ \type_K\circ(g\circ f)
+ &=(\type_K\circ g)\circ f
+ &&\text{by associativity}\\
+ &=\type_H\circ f
+ &&\text{because $g$ preserves types}\\
+ &=\type_G
+ &&\text{because $f$ preserves types}.
+\end{align*}
+Therefore, $g\circ f$ is a morphism in $\Graph/\TG$.
+
+The corresponding commuting diagram is
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+G \arrow[r,"f"] \arrow[rr,bend left=35,"g\circ f"]
+  \arrow[dr,swap,"\type_G"]
+& H \arrow[r,"g"] \arrow[d,"\type_H"]
+& K \arrow[dl,"\type_K"] \\
+& \TG &
+\end{tikzcd}
+\]
+
+\paragraph{Identity morphisms.}
+For every object $(G,\type_G)$, the graph identity
+$\id_G:G\to G$ preserves typing:
+\[
+    \type_G\circ\id_G=\type_G.
+\]
+Thus, every object has a valid identity morphism in $\Graph/\TG$.
+
+\paragraph{Associativity.}
+Typed morphisms are composed through their vertex and edge functions. Function
+composition is associative, so for all composable typed morphisms $f$, $g$,
+and $h$,
+\[
+    (h\circ g)\circ f=h\circ(g\circ f).
+\]
+Closure, proved above, ensures that both sides are still type-preserving
+morphisms.
+
+\paragraph{Identity laws.}
+For every typed morphism
+$f:(G,\type_G)\to(H,\type_H)$, the identity laws of the underlying graph
+morphisms give
+\[
+    \id_H\circ f=f
+    \qquad\text{and}\qquad
+    f\circ\id_G=f.
+\]
+The identities and $f$ preserve typing, so these equalities hold inside
+$\Graph/\TG$.
+
+All the category requirements are satisfied. Therefore, graphs typed over the
+fixed graph $\TG$, with type-preserving graph morphisms, form a category.
+\end{proof}
+
+\section{Categorical interpretation}
+
+The category just constructed is the \emph{slice category} of graphs over
+$\TG$. An object is an arrow $G\to\TG$, and a morphism is an arrow between
+their domains that makes the typing triangle commute. This is commonly written
+as $\Graph/\TG$ and is also represented in the lecture slides as
+$\Graph\downarrow\TG$.
+
+This interpretation explains the construction at a more general level: for
+any category $\mathbf{C}$ and fixed object $X$, the arrows with codomain $X$
+and their commuting triangles form the slice category $\mathbf{C}/X$.
+
+\section{Conclusion}
+
+The essential point is that all operations remain compatible with the fixed
+typing graph. Ordinary graph morphisms compose, and the equation
+$\type_H\circ f=\type_G$ remains true after composition. Identity morphisms
+also preserve typing, while associativity and the identity laws are inherited
+componentwise from ordinary functions. Consequently, $\Graph/\TG$ is a
+well-defined category.
+
+\end{document}\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+\definecolor{heading}{HTML}{7A1F32}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Advanced Software Engineering}
+\rhead{Homework 4}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\newcommand{\Graph}{\mathbf{Graph}}
+\newcommand{\TG}{\mathit{TG}}
+\newcommand{\type}{\mathit{type}}
+\newcommand{\id}{\mathit{id}}
+
+\title{\textcolor{heading}{\textbf{Homework 4}}}
+\author{Matteo Carrese\\Advanced Software Engineering}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section{Goal}
+
+This homework proves that graphs typed over a fixed type graph $\TG$, together
+with type-preserving graph morphisms, form a category. The proof first shows
+that graph morphisms are closed under composition. It then verifies
+composition, identities, associativity, and the identity laws for typed graphs.
+
+
+\section{Basic definitions}
+
+\begin{definition}[Directed graph]
+A directed graph is a tuple
+\[
+    G=(V_G,E_G,s_G,t_G),
+\]
+where $V_G$ is the set of vertices, $E_G$ is the set of edges, and
+$s_G,t_G:E_G\to V_G$ give the source and target of every edge.
+\end{definition}
+
+\begin{definition}[Graph morphism]
+Let $G$ and $H$ be directed graphs. A graph morphism $f:G\to H$ is a pair
+of functions
+\[
+    f_V:V_G\to V_H,
+    \qquad
+    f_E:E_G\to E_H
+\]
+that preserve the source and target of every edge:
+\begin{equation}
+    f_V\circ s_G=s_H\circ f_E,
+    \qquad
+    f_V\circ t_G=t_H\circ f_E.
+    \label{eq:graph-morphism}
+\end{equation}
+\end{definition}
+
+The two equations say that mapping an edge and then reading its endpoint gives
+the same result as reading the original endpoint and then mapping that vertex.
+Therefore, a graph morphism preserves the incidence structure of the graph.
+
+\section{Composition of graph morphisms}
+
+The following lemma proves the explicit homework statement appearing earlier
+in the lecture material.
+
+\begin{lemma}
+The composition of two graph morphisms is a graph morphism.
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+    f=(f_V,f_E):G\to H
+    \qquad\text{and}\qquad
+    g=(g_V,g_E):H\to K
+\]
+be graph morphisms. Define their composition componentwise:
+\[
+    g\circ f=(g_V\circ f_V,\;g_E\circ f_E):G\to K.
+\]
+
+We first verify preservation of sources. Using associativity of function
+composition and the morphism equations for $f$ and $g$, we obtain
+\begin{align*}
+ (g_V\circ f_V)\circ s_G
+ &=g_V\circ(f_V\circ s_G)\\
+ &=g_V\circ(s_H\circ f_E)\\
+ &=(g_V\circ s_H)\circ f_E\\
+ &=(s_K\circ g_E)\circ f_E\\
+ &=s_K\circ(g_E\circ f_E).
+\end{align*}
+
+The same calculation for targets gives
+\[
+    (g_V\circ f_V)\circ t_G
+    =t_K\circ(g_E\circ f_E).
+\]
+Hence $g\circ f$ satisfies both equations in
+Equation~\ref{eq:graph-morphism}, so it is a graph morphism.
+\end{proof}
+
+\section{Typed graphs}
+
+Fix one graph $\TG$, called the \emph{type graph}.
+
+\begin{definition}[Typed graph]
+A graph typed over $\TG$ is a pair $(G,\type_G)$, where $G$ is a graph and
+\[
+    \type_G:G\to\TG
+\]
+is a graph morphism. It assigns a type in $\TG$ to every vertex and edge of
+$G$ while preserving sources and targets.
+\end{definition}
+
+\begin{definition}[Type-preserving morphism]
+A morphism between two graphs typed over the same $\TG$,
+\[
+    f:(G,\type_G)\to(H,\type_H),
+\]
+is a graph morphism $f:G\to H$ satisfying
+\begin{equation}
+    \type_H\circ f=\type_G.
+    \label{eq:type-preservation}
+\end{equation}
+This equality means that the following triangle commutes:
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+G \arrow[rr,"f"] \arrow[dr,swap,"\type_G"]
+  & & H \arrow[dl,"\type_H"] \\
+  & \TG &
+\end{tikzcd}
+\]
+\end{definition}
+
+In simple terms, $f$ may map vertices and edges to different elements, but it
+cannot change their types.
+
+\section{The category of graphs typed over $\TG$}
+
+We define a structure denoted by $\Graph/\TG$:
+
+\begin{itemize}[leftmargin=2em]
+    \item its \textbf{objects} are all pairs $(G,\type_G)$ with
+          $\type_G:G\to\TG$;
+    \item its \textbf{morphisms} are graph morphisms that satisfy
+          Equation~\ref{eq:type-preservation};
+    \item composition is the componentwise composition of the underlying
+          graph morphisms;
+    \item the identity on $(G,\type_G)$ is the ordinary graph identity
+          $\id_G$.
+\end{itemize}
+
+\begin{theorem}
+The structure $\Graph/\TG$ is a category.
+\end{theorem}
+
+\begin{proof}
+We verify the required properties.
+
+\paragraph{Closure under composition.}
+Consider two composable type-preserving morphisms
+\[
+ f:(G,\type_G)\to(H,\type_H),
+ \qquad
+ g:(H,\type_H)\to(K,\type_K).
+\]
+By the lemma, the underlying composition $g\circ f:G\to K$ is a graph
+morphism. It also preserves typing because
+\begin{align*}
+ \type_K\circ(g\circ f)
+ &=(\type_K\circ g)\circ f
+ &&\text{by associativity}\\
+ &=\type_H\circ f
+ &&\text{because $g$ preserves types}\\
+ &=\type_G
+ &&\text{because $f$ preserves types}.
+\end{align*}
+Therefore, $g\circ f$ is a morphism in $\Graph/\TG$.
+
+The corresponding commuting diagram is
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+G \arrow[r,"f"] \arrow[rr,bend left=35,"g\circ f"]
+  \arrow[dr,swap,"\type_G"]
+& H \arrow[r,"g"] \arrow[d,"\type_H"]
+& K \arrow[dl,"\type_K"] \\
+& \TG &
+\end{tikzcd}
+\]
+
+\paragraph{Identity morphisms.}
+For every object $(G,\type_G)$, the graph identity
+$\id_G:G\to G$ preserves typing:
+\[
+    \type_G\circ\id_G=\type_G.
+\]
+Thus, every object has a valid identity morphism in $\Graph/\TG$.
+
+\paragraph{Associativity.}
+Typed morphisms are composed through their vertex and edge functions. Function
+composition is associative, so for all composable typed morphisms $f$, $g$,
+and $h$,
+\[
+    (h\circ g)\circ f=h\circ(g\circ f).
+\]
+Closure, proved above, ensures that both sides are still type-preserving
+morphisms.
+
+\paragraph{Identity laws.}
+For every typed morphism
+$f:(G,\type_G)\to(H,\type_H)$, the identity laws of the underlying graph
+morphisms give
+\[
+    \id_H\circ f=f
+    \qquad\text{and}\qquad
+    f\circ\id_G=f.
+\]
+The identities and $f$ preserve typing, so these equalities hold inside
+$\Graph/\TG$.
+
+All the category requirements are satisfied. Therefore, graphs typed over the
+fixed graph $\TG$, with type-preserving graph morphisms, form a category.
+\end{proof}
+
+\section{Categorical interpretation}
+
+The category just constructed is the \emph{slice category} of graphs over
+$\TG$. An object is an arrow $G\to\TG$, and a morphism is an arrow between
+their domains that makes the typing triangle commute. This is commonly written
+as $\Graph/\TG$ and is also represented in the lecture slides as
+$\Graph\downarrow\TG$.
+
+This interpretation explains the construction at a more general level: for
+any category $\mathbf{C}$ and fixed object $X$, the arrows with codomain $X$
+and their commuting triangles form the slice category $\mathbf{C}/X$.
+
+\section{Conclusion}
+
+The essential point is that all operations remain compatible with the fixed
+typing graph. Ordinary graph morphisms compose, and the equation
+$\type_H\circ f=\type_G$ remains true after composition. Identity morphisms
+also preserve typing, while associativity and the identity laws are inherited
+componentwise from ordinary functions. Consequently, $\Graph/\TG$ is a
+well-defined category.
+
+\end{document}
+
